@@ -1,9 +1,11 @@
-package com.adesso.shop.model;
+package com.adesso.shop.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +19,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "books")
 public class Book {
 
-  private @Id
-  @GeneratedValue Long id;
-    private String author;
-    private String title;
-    private String isbn;
-    private String description;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
+
+  @NotNull
+  private String author;
+
+  @NotNull
+  private String title;
+
+  @NotNull
+  private String isbn;
+
+  @NotNull
+  private String description;
 }

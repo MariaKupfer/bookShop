@@ -1,16 +1,32 @@
 version: "3.8"
+
 services:
-  postgres:
+  # Produktionsdatenbank
+  postgres-prod:
     image: postgres:latest
-    container_name: bookshop-postgres
+    container_name: bookshop-postgres-prod
     environment:
       POSTGRES_USER: bookshop_user
       POSTGRES_PASSWORD: bookshop_password
-      POSTGRES_DB: bookshop_db
+      POSTGRES_DB: bookshop_db_prod
     ports:
-      - "5432:5432"
+      - "5432:5432" # Port für PROD
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_prod_data:/var/lib/postgresql/data
+
+  # Testdatenbank
+  postgres-test:
+    image: postgres:latest
+    container_name: bookshop-postgres-test
+    environment:
+      POSTGRES_USER: bookshop_test_user
+      POSTGRES_PASSWORD: SELECT * from books;bookshop_test_password
+      POSTGRES_DB: bookshop_db_test
+    ports:
+      - "5433:5432" # Port für TEST
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  postgres_prod_data:
+  postgres_test_data:

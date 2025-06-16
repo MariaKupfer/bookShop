@@ -2,7 +2,7 @@ package com.adesso.shop.service;
 
 import java.util.List;
 
-import com.adesso.shop.model.Book;
+import com.adesso.shop.domain.Book;
 
 public interface BookService {
 
@@ -15,5 +15,7 @@ public interface BookService {
     void deleteBook(Long id);
 
     Book updateBook(Book newBook, Long id);
+
+    List<Book> getBookByTitle(String title);
     
 }
