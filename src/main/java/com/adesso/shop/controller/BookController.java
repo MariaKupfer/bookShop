@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adesso.shop.model.Book;
-import com.adesso.shop.service.BookService;
+import com.adesso.shop.service.BookServiceImpl;
 
 @RestController
 public class BookController {
 
     @Autowired
-    private BookService bookService; 
+    private BookServiceImpl bookService; 
 
-BookController(BookService bookService) {
+BookController(BookServiceImpl bookService) {
     this.bookService = bookService;
   }
 
