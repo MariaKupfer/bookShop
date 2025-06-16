@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: bookshop-postgres
+    environment:
+      POSTGRES_USER: bookshop_user
+      POSTGRES_PASSWORD: bookshop_password
+      POSTGRES_DB: bookshop_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
