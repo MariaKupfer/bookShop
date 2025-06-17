@@ -20,10 +20,10 @@ services:
     container_name: bookshop-postgres-test
     environment:
       POSTGRES_USER: bookshop_test_user
-      POSTGRES_PASSWORD: SELECT * from books;bookshop_test_password
+      POSTGRES_PASSWORD: bookshop_test_password
       POSTGRES_DB: bookshop_db_test
     ports:
-      - "5433:5432" # Port für TEST
+      - "5433:5432" # Port für TEST und LOCAL
     volumes:
       - postgres_test_data:/var/lib/postgresql/data
 

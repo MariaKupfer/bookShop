@@ -1,6 +1,7 @@
 package com.adesso.shop.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,24 +35,35 @@ public class BookController {
     }
 
   @PostMapping(PATH)
-  public Book addNewBook(@Valid @RequestBody Book newBook) {
-    return bookService.saveBook(newBook);
+  public ResponseEntity<Book> addNewBook(@Valid @RequestBody Book newBook) {
+    return new ResponseEntity<Book>(bookService.saveBook(newBook), HttpStatus.CREATED);
   }
 
   @GetMapping(PATH + "/{id}")
   public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-      Book book = bookService.getBookById(id);
-      return ResponseEntity.ok(book);
+      Optional<Book> result = bookService.getBookById(id);
+      return result
+        .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @PutMapping(PATH + "/{id}")
-  public Book updateBook(@Valid @RequestBody Book newBook, @PathVariable Long id) {
-    return bookService.updateBook(newBook, id);
+  public ResponseEntity<Book> updateBook(@Valid @RequestBody Book book, @PathVariable Long id) {
+    if (!bookService.isExists(id)){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    book.setId(id);
+    Book updatedBook = bookService.saveBook(book);
+    return new ResponseEntity<>(updatedBook, HttpStatus.OK);
   }
 
   @DeleteMapping(PATH + "/{id}")
-  public void deleteBook(@PathVariable Long id) {
+  public ResponseEntity deleteBook(@PathVariable Long id) {
+    if (!bookService.isExists(id)){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     bookService.deleteBook(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   // Exception Handling

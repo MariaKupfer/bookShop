@@ -1,6 +1,9 @@
 package com.adesso.shop.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
@@ -18,7 +21,10 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        return StreamSupport.stream(bookRepository
+                      .findAll()
+                      .spliterator(), false)
+                  .collect(Collectors.toList());
     }
 
     @Override
@@ -27,9 +33,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book getBookById(Long id) {
-      return bookRepository.findById(id)
-      .orElseThrow(() -> new BookNotFoundException(id));
+    public Optional<Book> getBookById(Long id) {
+      return bookRepository.findById(id);
     }
 
     @Override
@@ -41,24 +46,14 @@ public class BookServiceImpl implements BookService{
         }
     }
 
-    @Override
-    public Book updateBook(Book newBook, Long id){
-        return bookRepository.findById(id)
-      .map(Book -> {
-        Book.setTitle(newBook.getTitle());
-        Book.setAuthor(newBook.getAuthor());
-        Book.setDescription(newBook.getDescription());
-        Book.setIsbn(newBook.getIsbn());
-        return bookRepository.save(Book);
-      })
-      .orElseGet(() -> {
-        return bookRepository.save(newBook);
-      });
-    }
-
   @Override
   public List<Book> getBookByTitle(String title) {
     return bookRepository.findByTitle(title);
+  }
+
+  @Override
+  public boolean isExists(Long id) {
+   return bookRepository.existsById(id);
   }
 
 }
