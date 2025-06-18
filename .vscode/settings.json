@@ -1,0 +1,35 @@
+{
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "book-service-prod",
+      "database": "book_service_db_prod",
+      "username": "bookshop_user",
+      "password": "bookshop_password"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5433,
+      "driver": "PostgreSQL",
+      "name": "book-service-test",
+      "database": "book_service_db_test",
+      "password": "bookshop_password",
+      "username": "bookshop_user"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5434,
+      "driver": "PostgreSQL",
+      "name": "order-service-test",
+      "database": "order_service_db",
+      "username": "bookshop_user",
+      "password": "bookshop_password"
+    }
+  ]
+}
