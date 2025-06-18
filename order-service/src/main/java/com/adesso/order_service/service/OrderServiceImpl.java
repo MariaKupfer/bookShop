@@ -5,9 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.adesso.order_service.domain.Order;
+import com.adesso.order_service.domain.OrderEvent;
+import com.adesso.order_service.domain.OrderItem;
 import com.adesso.order_service.repository.OrderRepository;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
+    private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
     @Override
     public List<Order> getAllOrders() {
@@ -38,8 +42,14 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order saveOrder(Order order) {
-        return orderRepository.save(order);
+    Order savedOrder = orderRepository.save(order);
+
+    for (OrderItem item : savedOrder.getItems()) {
+        placeOrder(new OrderEvent(item.getId().toString()));
     }
+
+    return savedOrder;
+}
     
 
     @Override
@@ -47,4 +57,7 @@ public class OrderServiceImpl implements OrderService{
         return orderRepository.existsById(id);
     }
 
+    public void placeOrder(OrderEvent event) {
+        kafkaTemplate.send("order.created", event.getProductId(), event);
+    }
 }

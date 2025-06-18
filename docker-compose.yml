@@ -1,4 +1,48 @@
 services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - backend
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - backend
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    depends_on:
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - backend
+
+  book-service:
+    build: ./book-service
+    container_name: book-service
+    depends_on:
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - backend
+
   # Produktionsdatenbank
   book-service-prod:
     image: postgres:latest
@@ -11,6 +55,8 @@ services:
       - "5432:5432" # Port für PROD
     volumes:
       - book_service_prod_data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   # Testdatenbank
   book-service-test:
@@ -24,6 +70,8 @@ services:
       - "5433:5432" # Port für TEST und LOCAL
     volumes:
       - book_service_test_data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   order-service-test:
     image: postgres:latest
@@ -36,6 +84,11 @@ services:
       - "5434:5432"
     volumes:
       - order_service_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
 
 volumes:
   book_service_prod_data:
