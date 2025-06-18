@@ -13,7 +13,7 @@ public interface OrderService {
 
     void deleteOrder(Long id);
 
-    Order createOrder(Order order);
+    Order saveOrder(Order order);
 
     boolean isExists(Long id);
     

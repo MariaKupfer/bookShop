@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
 public class BookController {
 
   private final BookService bookService; 
-  private static final String PATH = "/books";
+  private static final String PATH = "v1/api/books";
 
   @GetMapping(PATH)
   public List<Book> getAllBooks() {

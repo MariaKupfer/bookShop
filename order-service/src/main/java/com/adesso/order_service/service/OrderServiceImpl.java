@@ -37,9 +37,10 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order createOrder(Order order) {
-       return orderRepository.save(order);
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
     }
+    
 
     @Override
     public boolean isExists(Long id) {
