@@ -19,6 +19,7 @@
     <modules>
         <module>book-service</module>
         <module>order-service</module>
+        <module>shopping-cart-service</module>
         <!-- Weitere Module hier hinzufügen -->
     </modules>
 

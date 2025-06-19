@@ -52,7 +52,20 @@ services:
     volumes:
       - order_service_data:/var/lib/postgresql/data
 
+  shopping-cart-service-test:
+    image: postgres:latest
+    container_name: shopping-cart-postgres
+    environment:
+      POSTGRES_USER: bookshop_user
+      POSTGRES_PASSWORD: bookshop_password
+      POSTGRES_DB: shopping_cart_service_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - shopping_cart_service_data:/var/lib/postgresql/data
+
 volumes:
   book_service_prod_data:
   book_service_test_data:
   order_service_data:
+  shopping_cart_service_data:

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.adesso.order_service.domain.Order;
 import com.adesso.order_service.service.OrderService;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -26,7 +25,7 @@ public class OrderController {
     private final OrderService orderService;
     private static final String PATH = "v1/api/orders";
     
-    @GetMapping(PATH)
+  @GetMapping(PATH)
   public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
