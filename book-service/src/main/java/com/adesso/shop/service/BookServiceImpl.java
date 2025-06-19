@@ -8,7 +8,6 @@ import java.util.stream.StreamSupport;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.adesso.shop.BookNotFoundException;
 import com.adesso.shop.domain.Book;
 import com.adesso.shop.domain.OrderEvent;
 import com.adesso.shop.repository.BookRepository;
@@ -41,11 +40,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public void deleteBook(Long id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
-        } else {
-            throw new BookNotFoundException(id);
-        }
+        bookRepository.deleteById(id);
     }
 
   @Override
@@ -58,12 +53,13 @@ public class BookServiceImpl implements BookService{
    return bookRepository.existsById(id);
   }
 
-@KafkaListener(topics = "order.created", groupId = "product-group")
-public void handleOrderCreated(OrderEvent event) {
-    Long bookId = Long.valueOf(event.getProductId());
+@KafkaListener(topics = "order.created", groupId = "my-consumer-group")
+public void handleOrderCreated(String message) {
+    Long bookId = Long.valueOf(message);
     Optional<Book> optionalBook = getBookById(bookId);
 
     if (optionalBook.isPresent()) {
+        System.out.println(bookId);
         Book book = optionalBook.get();
         book.setInStock(false);
         bookRepository.save(book);

@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
-    private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public List<Order> getAllOrders() {
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService{
     Order savedOrder = orderRepository.save(order);
 
     for (OrderItem item : savedOrder.getItems()) {
-        placeOrder(new OrderEvent(item.getId().toString()));
+        placeOrder(item.getBookId().toString());
     }
 
     return savedOrder;
@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService{
         return orderRepository.existsById(id);
     }
 
-    public void placeOrder(OrderEvent event) {
-        kafkaTemplate.send("order.created", event.getProductId(), event);
+    public void placeOrder(String id) {
+        kafkaTemplate.send("order.created", id);
     }
 }

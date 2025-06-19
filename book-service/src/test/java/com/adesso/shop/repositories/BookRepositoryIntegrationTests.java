@@ -22,16 +22,14 @@ public class BookRepositoryIntegrationTests {
     @Autowired
     private BookService underTest;
 
-@Test
-public void testThatBookCanBeCreatedAndRecalled() {
-    Book book = TestDataUtil.createTestBookA();
-    underTest.saveBook(book);
-
-    Optional<Book> result = underTest.getBookById(book.getId());
-
-    assertThat(result).isPresent(); 
-    assertThat(result.get()).isEqualTo(book); 
-}
+    @Test
+    public void testThatBookCanBeCreatedAndRecalled() {
+        Book book = TestDataUtil.createTestBookA();
+        underTest.saveBook(book);
+        Optional<Book> result = underTest.getBookById(book.getId());
+        assertThat(result).isPresent(); 
+        assertThat(result.get()).isEqualTo(book); 
+    }
 
     @Test
     public void testFindByTitleReturnsBook() {
