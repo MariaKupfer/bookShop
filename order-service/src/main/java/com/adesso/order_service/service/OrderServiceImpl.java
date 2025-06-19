@@ -9,7 +9,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.adesso.order_service.domain.Order;
-import com.adesso.order_service.domain.OrderEvent;
 import com.adesso.order_service.domain.OrderItem;
 import com.adesso.order_service.repository.OrderRepository;
 

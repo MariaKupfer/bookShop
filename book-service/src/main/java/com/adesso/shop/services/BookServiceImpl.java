@@ -1,4 +1,4 @@
-package com.adesso.shop.service;
+package com.adesso.shop.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,8 @@ import java.util.stream.StreamSupport;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.adesso.shop.domain.Book;
-import com.adesso.shop.domain.OrderEvent;
-import com.adesso.shop.repository.BookRepository;
+import com.adesso.shop.domain.BookEntity;
+import com.adesso.shop.repositories.BookRepository;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -21,7 +20,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<BookEntity> getAllBooks() {
         return StreamSupport.stream(bookRepository
                       .findAll()
                       .spliterator(), false)
@@ -29,12 +28,12 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book saveBook(Book book) {
+    public BookEntity saveBook(BookEntity book) {
         return bookRepository.save(book);
     }
 
     @Override
-    public Optional<Book> getBookById(Long id) {
+    public Optional<BookEntity> getBookById(Long id) {
       return bookRepository.findById(id);
     }
 
@@ -44,7 +43,7 @@ public class BookServiceImpl implements BookService{
     }
 
   @Override
-  public List<Book> getBookByTitle(String title) {
+  public List<BookEntity> getBookByTitle(String title) {
     return bookRepository.findByTitle(title);
   }
 
@@ -56,11 +55,11 @@ public class BookServiceImpl implements BookService{
 @KafkaListener(topics = "order.created", groupId = "my-consumer-group")
 public void handleOrderCreated(String message) {
     Long bookId = Long.valueOf(message);
-    Optional<Book> optionalBook = getBookById(bookId);
+    Optional<BookEntity> optionalBook = getBookById(bookId);
 
     if (optionalBook.isPresent()) {
         System.out.println(bookId);
-        Book book = optionalBook.get();
+        BookEntity book = optionalBook.get();
         book.setInStock(false);
         bookRepository.save(book);
     } else {

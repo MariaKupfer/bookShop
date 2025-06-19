@@ -1,14 +1,14 @@
 package com.adesso.shop;
 
-import com.adesso.shop.domain.Book;
+import com.adesso.shop.domain.BookEntity;
 
 public class TestDataUtil {
     private TestDataUtil(){
 
     }
 
-public static Book createTestBookA() {
-    return Book.builder()
+public static BookEntity createTestBookA() {
+    return BookEntity.builder()
             .title("Clean Code")
             .author("Robert C. Martin")
             .description("A Handbook of Agile Software Craftsmanship")
@@ -17,8 +17,8 @@ public static Book createTestBookA() {
             .build();
 }
 
-public static Book createTestBookB() {
-    return Book.builder()
+public static BookEntity createTestBookB() {
+    return BookEntity.builder()
             .title("Effective Java")
             .author("Joshua Bloch")
             .description("Best practices for the Java platform")

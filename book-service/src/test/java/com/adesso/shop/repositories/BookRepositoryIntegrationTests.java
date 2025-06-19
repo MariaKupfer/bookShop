@@ -6,9 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import com.adesso.shop.TestDataUtil;
-import com.adesso.shop.domain.Book;
-import com.adesso.shop.service.BookService;
-
+import com.adesso.shop.domain.BookEntity;
+import com.adesso.shop.services.BookService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,22 +23,22 @@ public class BookRepositoryIntegrationTests {
 
     @Test
     public void testThatBookCanBeCreatedAndRecalled() {
-        Book book = TestDataUtil.createTestBookA();
+        BookEntity book = TestDataUtil.createTestBookA();
         underTest.saveBook(book);
-        Optional<Book> result = underTest.getBookById(book.getId());
+        Optional<BookEntity> result = underTest.getBookById(book.getId());
         assertThat(result).isPresent(); 
         assertThat(result.get()).isEqualTo(book); 
     }
 
     @Test
     public void testFindByTitleReturnsBook() {
-        Book book = TestDataUtil.createTestBookA();
+        BookEntity book = TestDataUtil.createTestBookA();
         TestDataUtil.createTestBookB();
         book.setTitle("Clean Code");
         underTest.saveBook(book);
-        List<Book> result = underTest.getBookByTitle("Clean Code");
+        List<BookEntity> result = underTest.getBookByTitle("Clean Code");
         assertThat(result).isNotNull();
-        assertThat(result).extracting(Book::getTitle)
+        assertThat(result).extracting(BookEntity::getTitle)
                       .containsOnly(book.getTitle());
     }
 }

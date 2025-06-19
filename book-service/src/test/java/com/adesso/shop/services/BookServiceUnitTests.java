@@ -11,9 +11,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.adesso.shop.TestDataUtil;
-import com.adesso.shop.domain.Book;
-import com.adesso.shop.repository.BookRepository;
-import com.adesso.shop.service.BookServiceImpl;
+import com.adesso.shop.domain.BookEntity;
+import com.adesso.shop.repositories.BookRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceUnitTests {
@@ -26,11 +25,11 @@ public class BookServiceUnitTests {
 
     @Test
     public void testThatBookCanBeCreated(){
-        Book newBook = TestDataUtil.createTestBookA();
-        Book createdBookMock = newBook;
+        BookEntity newBook = TestDataUtil.createTestBookA();
+        BookEntity createdBookMock = newBook;
         createdBookMock.setId(1L);
-        when(bookRepository.save(Mockito.any(Book.class))).thenReturn(createdBookMock);
-        Book result = bookServiceImpl.saveBook(newBook);
+        when(bookRepository.save(Mockito.any(BookEntity.class))).thenReturn(createdBookMock);
+        BookEntity result = bookServiceImpl.saveBook(newBook);
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(createdBookMock);
         assertThat(result.getId()).isGreaterThan(0);

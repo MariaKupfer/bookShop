@@ -11,8 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.adesso.shop.TestDataUtil;
-import com.adesso.shop.domain.Book;
-import com.adesso.shop.service.BookService;
+import com.adesso.shop.domain.BookEntity;
+import com.adesso.shop.services.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -23,6 +23,7 @@ public class BookControllerIntegrationTests {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
     private BookService bookService;
+    private static final String PATH = "/v1/api/books";
 
 
     @Autowired
@@ -34,11 +35,11 @@ public class BookControllerIntegrationTests {
     
     @Test
     public void testThatCreateBookSuccesfullyReturnsHttp201Created() throws Exception{
-        Book book = TestDataUtil.createTestBookA();
+        BookEntity book = TestDataUtil.createTestBookA();
         book.setId(null);
         String bookJSON = objectMapper.writeValueAsString(book);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/books")
+        mockMvc.perform(MockMvcRequestBuilders.post(PATH)
             .contentType(MediaType.APPLICATION_JSON)
             .content(bookJSON)
         ).andExpect(
@@ -48,11 +49,11 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatCreateBookSuccesfullyReturnsSavedBook() throws Exception{
-        Book book = TestDataUtil.createTestBookA();
+        BookEntity book = TestDataUtil.createTestBookA();
         book.setId(null);
         String bookJSON = objectMapper.writeValueAsString(book);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/books")
+        mockMvc.perform(MockMvcRequestBuilders.post(PATH)
             .contentType(MediaType.APPLICATION_JSON)
             .content(bookJSON)
         ).andExpect(
@@ -70,14 +71,14 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatListOfAllBooksReturnsHttpStatus200() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/books")
+        mockMvc.perform(MockMvcRequestBuilders.get(PATH)
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());  
     }
 
     @Test
     public void testThatListOfAllBooksReturnsListOfBooks() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/books")
+        mockMvc.perform(MockMvcRequestBuilders.get(PATH)
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
             MockMvcResultMatchers.status().isOk()
@@ -96,26 +97,26 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatFindBookByIdReturnsHttpStatus200() throws Exception{
-        Book book = TestDataUtil.createTestBookA();
-        Book createdBook = bookService.saveBook(book);
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/" + createdBook.getId())
+        BookEntity book = TestDataUtil.createTestBookA();
+        BookEntity createdBook = bookService.saveBook(book);
+        mockMvc.perform(MockMvcRequestBuilders.get(PATH + "/" + createdBook.getId())
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());  
     }
 
     @Test
     public void testThatFindBookByIdReturnsHttpStatus404() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/99")
+        mockMvc.perform(MockMvcRequestBuilders.get(PATH + "/99")
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());  
     }
 
     @Test
     public void testThatFindBookByIdSuccesfullyReturnsBookById() throws Exception{
-        Book book = TestDataUtil.createTestBookA();
-        Book createdBook = bookService.saveBook(book);
+        BookEntity book = TestDataUtil.createTestBookA();
+        BookEntity createdBook = bookService.saveBook(book);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/" + createdBook.getId())
+        mockMvc.perform(MockMvcRequestBuilders.get(PATH + "/" + createdBook.getId())
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
             MockMvcResultMatchers.status().isOk()
@@ -132,11 +133,11 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatUpdateBookdReturnsHttpStatus200() throws Exception{
-        Book book = TestDataUtil.createTestBookA();
-        Book createdBook = bookService.saveBook(book);
+        BookEntity book = TestDataUtil.createTestBookA();
+        BookEntity createdBook = bookService.saveBook(book);
         createdBook.setAuthor("Maria Kupfer");
         String bookJSON = objectMapper.writeValueAsString(createdBook);
-        mockMvc.perform(MockMvcRequestBuilders.put("/books/" + createdBook.getId())
+        mockMvc.perform(MockMvcRequestBuilders.put(PATH + "/" + createdBook.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(bookJSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());  
@@ -144,11 +145,11 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatUpdateBookSuccesfullyReturnsBookById() throws Exception{
-        Book book = TestDataUtil.createTestBookA();
-        Book createdBook = bookService.saveBook(book);
+        BookEntity book = TestDataUtil.createTestBookA();
+        BookEntity createdBook = bookService.saveBook(book);
         createdBook.setAuthor("Maria Kupfer");
         String bookJSON = objectMapper.writeValueAsString(createdBook);
-        mockMvc.perform(MockMvcRequestBuilders.put("/books/" + createdBook.getId())
+        mockMvc.perform(MockMvcRequestBuilders.put(PATH + "/" + createdBook.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(bookJSON)
         ).andExpect(
@@ -168,16 +169,16 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatDeleteBookReturnsHttpStatus204() throws Exception{
-        Book book = TestDataUtil.createTestBookA();
-        Book createdBook = bookService.saveBook(book);
-        mockMvc.perform(MockMvcRequestBuilders.delete("/books/" + createdBook.getId())
+        BookEntity book = TestDataUtil.createTestBookA();
+        BookEntity createdBook = bookService.saveBook(book);
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH + "/" + createdBook.getId())
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());  
     }
 
     @Test
     public void testThatDeleteBookReturnsHttpStatus404() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.delete("/books/999")
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH + "/999")
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());  
     }
