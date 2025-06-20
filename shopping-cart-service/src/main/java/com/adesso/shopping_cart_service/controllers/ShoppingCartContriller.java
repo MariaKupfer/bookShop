@@ -62,5 +62,15 @@ public class ShoppingCartContriller {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-    
+  @GetMapping(PATH + "/checkout/{id}" )
+  public ResponseEntity checkout(@PathVariable Long id) {
+    Optional<ShoppingCartEntity> result = shoppingCartService.getShoppingCartEntityById(id);
+    if (result.isPresent()) {
+        ShoppingCartDTO cartDTO = shoppingCartMapper.mapTo(result.get());
+        shoppingCartService.checkout(cartDTO);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } else {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  } 
 }

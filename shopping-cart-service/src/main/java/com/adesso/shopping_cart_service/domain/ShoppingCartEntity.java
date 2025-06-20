@@ -29,7 +29,8 @@ public class ShoppingCartEntity {
     @SequenceGenerator(name = "shopping_cart_seq", sequenceName = "shopping_cart_seq", allocationSize = 50)
     @Column(name = "shopping_cart_id")
     private Long id;
-    private double price;
+    private Double amount;
+    private String currency;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)

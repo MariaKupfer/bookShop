@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShoppingCartDTO {
-        private Long id;
+    private Long id;
+    private Double amount;
+    private String currency;
     private List<ShoppingCartItemEntity> items;
 }
