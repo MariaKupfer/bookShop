@@ -30,6 +30,16 @@
       "database": "order_service_db",
       "username": "bookshop_user",
       "password": "bookshop_password"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5437,
+      "driver": "PostgreSQL",
+      "name": "notification-service-test",
+      "database": "notification_service_db",
+      "username": "bookshop_user",
+      "password": "bookshop_password"
     }
   ]
 }

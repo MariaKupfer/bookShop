@@ -2,7 +2,7 @@ spring:
   application:
     name: notification-service
   datasource:
-    url: jdbc:postgresql://localhost:5433/notification_service_db_test
+    url: jdbc:postgresql://localhost:5437/notification_service_db
     username: bookshop_user
     password: bookshop_password
     driver-class-name: org.postgresql.Driver
@@ -14,3 +14,23 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bsp@gmail.com
+    password: dein_app_passwort
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

@@ -29,5 +29,5 @@ public class ShoppingCartItemEntity {
     @ManyToOne
     @JoinColumn(name="checkout_id")
     @JsonBackReference
-    private CheckoutEntity order;
+    private CheckoutEntity checkout;
 }

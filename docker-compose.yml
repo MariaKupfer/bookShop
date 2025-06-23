@@ -72,21 +72,21 @@ services:
       POSTGRES_PASSWORD: bookshop_password
       POSTGRES_DB: user_service_db
     ports:
-      - "5435:5432"
+      - "5436:5432"
     volumes:
       - user_service_data:/var/lib/postgresql/data
 
-  notofication-service-test:
+  notification-service-test:
     image: postgres:latest
-    container_name: notofication-postgres
+    container_name: notification-postgres
     environment:
       POSTGRES_USER: bookshop_user
       POSTGRES_PASSWORD: bookshop_password
-      POSTGRES_DB: notofication_service_db
+      POSTGRES_DB: notification_service_db
     ports:
-      - "5435:5432"
+      - "5437:5432"
     volumes:
-      - notofication_service_data:/var/lib/postgresql/data
+      - notification_service_data:/var/lib/postgresql/data
 
   checkout-service-test:
     image: postgres:latest
@@ -96,7 +96,7 @@ services:
       POSTGRES_PASSWORD: bookshop_password
       POSTGRES_DB: checkout_service_db
     ports:
-      - "5435:5432"
+      - "5438:5432"
     volumes:
       - checkout_service_data:/var/lib/postgresql/data
 
@@ -107,4 +107,4 @@ volumes:
   shopping_cart_service_data:
   checkout_service_data:
   user_service_data:
-  notofication-service-test:
+  notification_service_data:

@@ -42,8 +42,8 @@ public class CheckoutEntity {
 
     private String paymentMethod;
 
-    @OneToMany(mappedBy = "checkout", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @OneToMany(mappedBy = "checkout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingCartItemEntity> items;
 
     private LocalDateTime createdAt = LocalDateTime.now();
